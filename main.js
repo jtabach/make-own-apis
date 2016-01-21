@@ -23,10 +23,13 @@ var server = http.createServer(function(req, res) {
 			break;
 		case 'sentence':
 			var arr = urlParts[1].split('%20');
+			console.log(urlParts);
 			var obj = {
-				'letters': arr.join('').length,
+				'letters': arr.join('').replace(/[^A-Za-z]/g,'').length, // Note, this is a letter count, not character count
 				'spaces': arr.length - 1,
-				'words': arr.length
+				'words': urlParts[1].replace(/[^%0-9A-Za-z]/g,'').split('%20').filter(function(elem) {
+					return elem !== "";
+				}).length
 			};
 			urlParts[1].split('%20').length;
 			res.end(JSON.stringify(obj) + '\n');
